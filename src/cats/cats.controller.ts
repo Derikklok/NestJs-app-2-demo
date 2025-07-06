@@ -1,12 +1,26 @@
-import { Controller, Get, HttpCode, Param, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Req,
+} from '@nestjs/common';
 import { Request } from 'express';
+import { CreateCatDto } from './create-cat.dto';
 
 @Controller('cats')
 export class CatsController {
+
   @Post()
   @HttpCode(201)
-  create(): string {
-    return `This will create a new cats record`;
+  async create(@Body() createCatDto: CreateCatDto) {
+    return `This will create a new cat record -> \n
+    Name : ${createCatDto.name} \n
+    Age : ${createCatDto.age} \n
+    Breed : ${createCatDto.breed}`;
+
   }
 
   @Get('breed')
@@ -23,9 +37,8 @@ export class CatsController {
 
   // get cat by id
   @Get(':id')
-  getById(@Param() params:any):string{
+  getById(@Param() params: any): string {
     console.log(params.id);
     return `This endpoint will return the cats details by ${params.id}`;
   }
-
 }
